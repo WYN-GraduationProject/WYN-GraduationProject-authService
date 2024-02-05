@@ -1,0 +1,32 @@
+server:
+  port: 8681
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+spring:
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
+    virtual-host: ${RABBITMQ_VHOST}
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 1.94.63.237:8848
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  web:
+    verify:
+      mail-limit: 60
+    flow:
+      period: 3
+      limit: 50
+      block: 30
+    cors:
+      origin: '*'
+      credentials: false
+      methods: '*'
