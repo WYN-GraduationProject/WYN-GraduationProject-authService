@@ -1,8 +1,6 @@
 package com.constantineqaq.base.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.constantineqaq.base.entity.dto.Account;
 import com.constantineqaq.base.entity.vo.request.ConfirmResetVO;
@@ -14,18 +12,14 @@ import constant.Const;
 import jakarta.annotation.Resource;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import utils.FlowUtil;
+import utils.RedisUtil;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 账户信息处理相关服务
@@ -41,7 +35,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     AmqpTemplate rabbitTemplate;
 
     @Resource
-    StringRedisTemplate stringRedisTemplate;
+    RedisUtil redisUtil;
 
     @Resource
     PasswordEncoder passwordEncoder;
@@ -49,23 +43,6 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     @Resource
     FlowUtil flow;
 
-    /**
-     * 从数据库中通过用户名或邮箱查找用户详细信息
-     * @param username 用户名
-     * @return 用户详细信息
-     * @throws UsernameNotFoundException 如果用户未找到则抛出此异常
-     */
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account account = this.findAccountByNameOrEmail(username);
-        if(account == null)
-            throw new UsernameNotFoundException("用户名或密码错误");
-        return User
-                .withUsername(username)
-                .password(account.getPassword())
-                .roles(account.getRole())
-                .build();
-    }
 
     /**
      * 生成注册验证码存入Redis中，并将邮件发送请求提交到消息队列等待发送
@@ -82,8 +59,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
             int code = random.nextInt(899999) + 100000;
             Map<String, Object> data = Map.of("type",type,"email", email, "code", code);
             rabbitTemplate.convertAndSend(Const.MQ_MAIL, data);
-            stringRedisTemplate.opsForValue()
-                    .set(Const.VERIFY_EMAIL_DATA + email, String.valueOf(code), 3, TimeUnit.MINUTES);
+            redisUtil.set(Const.VERIFY_EMAIL_DATA + email, String.valueOf(code), 3 * 60);
             return null;
         }
     }
@@ -150,7 +126,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
      */
     private void deleteEmailVerifyCode(String email){
         String key = Const.VERIFY_EMAIL_DATA + email;
-        stringRedisTemplate.delete(key);
+        redisUtil.del(key);
     }
 
     /**
@@ -160,7 +136,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
      */
     private String getEmailVerifyCode(String email){
         String key = Const.VERIFY_EMAIL_DATA + email;
-        return stringRedisTemplate.opsForValue().get(key);
+        return redisUtil.get(key) == null ? null : redisUtil.get(key).toString();
     }
 
     /**
