@@ -10,12 +10,12 @@
     </parent>
 
     <artifactId>auth-web</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
             <groupId>com.constantineqaq</groupId>
             <artifactId>auth-base</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

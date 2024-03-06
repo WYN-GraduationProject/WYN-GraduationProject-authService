@@ -8,12 +8,13 @@
     <artifactId>auth</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
     <modules>
-        <module>auth-web</module>
         <module>auth-dal</module>
         <module>auth-service</module>
         <module>auth-base</module>
         <module>auth-assembly</module>
+        <module>auth-web</module>
     </modules>
 
 
@@ -24,10 +25,26 @@
         <spring-boot.version>3.0.2</spring-boot.version>
         <spring-cloud-alibaba.version>2022.0.0.0-RC2</spring-cloud-alibaba.version>
         <spring-cloud.version>2022.0.0</spring-cloud.version>
+        <auth-service.version>1.0-SNAPSHOT</auth-service.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.constantineqaq</groupId>
+                <artifactId>auth-base</artifactId>
+                <version>${auth-service.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.constantineqaq</groupId>
+                <artifactId>auth-web</artifactId>
+                <version>${auth-service.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.constantineqaq</groupId>
+                <artifactId>auth-assembly</artifactId>
+                <version>${auth-service.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -73,6 +90,9 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>com.constantineqaq.assembly.AuthAssemblyApplication</mainClass>
+                </configuration>
                 <executions>
                     <execution>
                         <id>repackage</id>
