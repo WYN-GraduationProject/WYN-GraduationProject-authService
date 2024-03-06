@@ -29,7 +29,7 @@ jobs:
       - name: Clone common module
         run: |
           git clone https://github.com/WYN-GraduationProject/WYN-GraduationProject-common.git
-          cd common
+          cd WYN-GraduationProject-common
           git checkout main
           mvn install -DskipTests
       - name: Build with Maven
