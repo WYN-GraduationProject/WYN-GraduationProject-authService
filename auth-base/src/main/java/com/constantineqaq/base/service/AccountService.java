@@ -5,9 +5,9 @@ import com.constantineqaq.base.entity.dto.Account;
 import com.constantineqaq.base.entity.vo.request.ConfirmResetVO;
 import com.constantineqaq.base.entity.vo.request.EmailRegisterVO;
 import com.constantineqaq.base.entity.vo.request.EmailResetVO;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface AccountService extends IService<Account>, UserDetailsService {
+
+public interface AccountService extends IService<Account> {
     Account findAccountByNameOrEmail(String text);
     String registerEmailVerifyCode(String type, String email, String address);
     String registerEmailAccount(EmailRegisterVO info);

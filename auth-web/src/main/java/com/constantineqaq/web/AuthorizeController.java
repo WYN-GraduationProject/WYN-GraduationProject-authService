@@ -21,7 +21,7 @@ import java.util.function.Supplier;
  */
 @Validated
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/user")
 public class AuthorizeController {
 
     @Resource
