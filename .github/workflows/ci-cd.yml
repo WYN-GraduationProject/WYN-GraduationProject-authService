@@ -26,6 +26,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+      - name: Clone common module
+        run: |
+          git clone https://github.com/WYN-GraduationProject/WYN-GraduationProject-common.git
+          cd common
+          git checkout main
+          mvn install -DskipTests
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
