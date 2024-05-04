@@ -8,9 +8,11 @@ import com.constantineqaq.base.entity.vo.request.EmailResetVO;
 
 
 public interface AccountService extends IService<Account> {
-    Account findAccountByNameOrEmail(String text);
     String registerEmailVerifyCode(String type, String email, String address);
+
     String registerEmailAccount(EmailRegisterVO info);
+
     String resetEmailAccountPassword(EmailResetVO info);
+
     String resetConfirm(ConfirmResetVO info);
 }

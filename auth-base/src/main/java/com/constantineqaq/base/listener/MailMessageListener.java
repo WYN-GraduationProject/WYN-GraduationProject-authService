@@ -29,7 +29,7 @@ public class MailMessageListener {
 
     private String generateHtmlContent(String type, Integer code) {
         // HTML内容，内联CSS样式用于美化
-
+        String typeZH = type.equals("register") ? "注册" : "重置密码";
         return "<!DOCTYPE html>" +
                 "<html>" +
                 "<head>" +
@@ -43,10 +43,10 @@ public class MailMessageListener {
                 "</head>" +
                 "<body>" +
                 "<div class=\"container\">" +
-                "<div class=\"header\">您的" + type + "验证码</div>" +
-                "<p>感谢您使用我们的服务，请在下方输入您的验证码：</p>" +
+                "<div class=\"header\">您的" + typeZH + "验证码</div>" +
+                "<p>感谢您使用我们的服务，这是您的验证码：</p>" +
                 "<div class=\"code\">" + code + "</div>" +
-                "<p>请注意，此验证码在10分钟内有效。</p>" +
+                "<p>请注意，此验证码在3分钟内有效。</p>" +
                 "<div class=\"footer\">如果您没有请求此验证码，请忽略此邮件。</div>" +
                 "</div>" +
                 "</body>" +
