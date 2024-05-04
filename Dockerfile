@@ -29,7 +29,7 @@ RUN mvn package
 
 # 第三阶段: 创建运行镜像
 # 使用只包含 JRE 的 OpenJDK 镜像
-FROM openjdk:17-jre-slim
+FROM openjdk:17-jdk-slim
 
 # 从第二阶段拷贝构建好的可执行 Jar 文件到运行目录
 COPY --from=build-authService /authService/auth-assembly/target/auth-assembly-1.0-SNAPSHOT.jar /app/authService.jar
