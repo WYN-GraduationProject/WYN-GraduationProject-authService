@@ -1,6 +1,6 @@
 # 第一阶段: 构建 Java_common
 # 使用 Maven 官方镜像作为基础镜像
-FROM maven:3.6.3-jdk-17 AS build-common
+FROM maven:3-openjdk-17 AS build-common
 
 # 复制 Java_common 项目文件到容器中
 COPY WYN-GraduationProject-common/java_common /Java_common
@@ -13,7 +13,7 @@ RUN mvn install
 
 # 第二阶段: 构建 Gateway
 # 再次使用 Maven 镜像
-FROM maven:3.6.3-jdk-17 AS build-authService
+FROM maven:3-openjdk-17 AS build-authService
 
 # 从第一阶段拷贝已安装的依赖包
 COPY --from=build-common /root/.m2 /root/.m2
