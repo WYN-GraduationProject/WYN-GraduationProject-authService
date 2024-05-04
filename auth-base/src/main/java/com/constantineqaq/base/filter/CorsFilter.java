@@ -15,8 +15,6 @@ import java.io.IOException;
 /**
  * 跨域配置过滤器，仅处理跨域，添加跨域响应头
  */
-@Component
-@Order(Const.ORDER_CORS)
 public class CorsFilter extends HttpFilter {
 
     @Value("${spring.web.cors.origin}")
